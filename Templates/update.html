@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Policy Update</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Update Record</h1>
+
+
+    <div class="form">
+        <form action="/update/{{record.id}}" method="POST">
+            <input type="text" name="QuoteDate" id="QuoteDate" value="{{record.quoteDate}}">
+            <input type="text" name="FirstName" id="FirstName" value="{{record.fName}}">
+            <input type="text" name="LastName" id="LastName" value="{{record.lName}}">
+            <input type="text" name="DateofBirth" id="DateofBirth" value="{{record.dob}}">
+            <input type="text" name="PhSex" id="PhSex" value="{{record.phSex}}">
+            <input type="text" name="Married?" id="Married?" value="{{record.marStatus}}">
+            <input type="text" name="YearsOwned" id="YearsOwned" value="{{record.yrsOwned}}">
+            <input type="text" name="Claims3Yrs" id="CL3Years" value="{{record.claims3yrs}}">
+            <input type="text" name="EmplyStatus" id="EmplyStatus" value="{{record.emplyStatus}}">
+            <input type="text" name="YrBuilt" id="YrBuilt" value="{{record.yrBuilt}}">
+            <input type="text" name="NumBedrooms" id="NumBedrooms" value="{{record.numBedrooms}}">
+            <input type="text" name="BizUse" id="BizUse" value="{{record.bizUse}}">
+            <input type="text" name="PropUsage" id="PropUsage" value="{{record.propUsage}}">
+            <input type="text" name="PolStatus" id="PolStatus" value="{{record.polStatus}}">
+            <input type="text" name="MaxUnocc" id="MaxUnocc" value="{{record.maxUnocc}}">
+            <input type="text" name="Alarm" id="Alarm" value="{{record.alarm}}">
+            <input type="text" name="Deadbolts" id="Deadbolts" value="{{record.deadbolts}}">
+            <input type="text" name="PropAddress" id="PropAddress" value="{{record.propAddress}}">
+            <input type="text" name="City" id="City" value="{{record.city}}">
+            <input type="text" name="State" id="State" value="{{record.state}}">
+            <input type="text" name="HoodWatch" id="HoodWatch" value="{{record.hoodWatch}}">
+            <input type="text" name="OnMarket" id="OnMarket" value="{{record.onMarket}}">
+            <input type="text" name="PurchPrice" id="PurchPrice" value="{{record.purchPrice}}">
+            <input type="text" name="ListPrice" id="ListPrice" value="{{record.listPrice}}">
+            <input type="text" name="SalePrice" id="SalePrice" value="{{record.salePrice}}">
+            <input type="text" name="DaysOnMarket" id="DaysOnMarket" value="{{record.daysOnMarket}}">
+            <input type="text" name="SaleDate" id="SaleDate" value="{{record.saleDate}}">
+            <input type="text" name="SaleStatus" id="SaleStatus" value="{{record.saleStatus}}">
+            <input type="submit" value="Update Record">
+            <input type="button" value="Go back!" onclick="history.back()">
+
+        </form>
+    </div>
+</div>
+{% endblock %}

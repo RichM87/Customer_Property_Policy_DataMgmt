@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Prop Policy Form </title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Property Insurance Policy Input</h1>
+    {% if records|length < 1 %}
+    <h4 style="text-align: center">There are no records. Create one below!</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>Quote Date</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Policyholder Sex</th>
+            <th>Marital Status</th>
+            <th>Years Owned</th>
+            <th># Claims Past 3 Yrs</th>
+            <th>Employment Status</th>
+            <th>Year Built</th>
+            <th># of Bedrooms</th>
+            <th>Business Use</th>
+            <th>Property Usage</th>
+            <th>Policy Status</th>
+            <th>Max Days Unoccupied</th>
+            <th>Alarm</th>
+            <th>Deadbolts</th>
+            <th>Property Street Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Neighborhood Watch</th>
+            <th>Purchase Price</th>
+            <th>List Price</th>
+            <th>Sale Price</th>
+            <th>On Market?</th>
+            <th>Days on Market</th>
+            <th>Sale Date</th>
+
+        </tr>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.quoteDate }}</td>
+                <td>{{ record.fName}}</td>
+                <td>{{ record.lName }}</td>
+                <td>{{ record.dob }}</td>
+                <td>{{ record.phSex }}</td>
+                <td>{{ record.marStatus }}</td>
+                <td>{{ record.yrsOwned }}</td>
+                <td>{{ record.claims3yrs }}</td>
+                <td>{{ record.emplyStatus }}</td>
+                <td>{{ record.yrBuilt }}</td>
+                <td>{{ record.numBedrooms }}</td>
+                <td>{{ record.bizUse }}</td>
+                <td>{{ record.propUsage }}</td>
+                <td>{{ record.polStatus }}</td>
+                <td>{{ record.maxUnocc }}</td>
+                <td>{{ record.alarm }}</td>
+                <td>{{ record.deadbolts }}</td>
+                <td>{{ record.propAddress }}</td>
+                <td>{{ record.city }}</td>
+                <td>{{ record.state }}</td>
+                <td>{{ record.hoodWatch }}</td>
+                <td>{{ record.purchPrice }}</td>
+                <td>{{ record.listPrice }}</td>
+                <td>{{ record.salePrice }}</td>
+                <td>{{ record.onMarket }}</td>
+                <td>{{ record.daysOnMarket }}</td>
+                <td>{{ record.saleDate }}</td>
+
+
+                <td>
+                    <a href="/delete/{{record.id}}">Delete</a>
+                    <br>
+                    <a href="/update/{{record.id}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <form action="/" method="POST">
+        <input type="text" name="QuoteDate" id="QuoteDate" placeholder="Quote Date 'mm-dd-yyyy'" autofocus>
+        <input type="text" name="FirstName" id="FirstName" placeholder="First Name" autocapitalize="words">
+        <input type="text" name="LastName" id="LastName" placeholder="Last Name" autocapitalize="words">
+        <input type="text" name="DateofBirth" id="DateofBirth" placeholder="Date of Birth 'mm-dd-yyyy'">
+        <input type="text" name="PhSex" id="PhSex" placeholder="Sex of Policyholder - M or F">
+        <input type="text" name="Married?" id="Married?" list="mValues" placeholder="Marital Status">
+        <datalist id="mValues">
+            <option value="M">
+            <option value="D">
+            <option value="S">
+            <option value="DP">
+            <option value="W">
+        </datalist>
+        <input type="text" name="YearsOwned" id="YearsOwned" placeholder="Years Owned Property">
+        <input type="text" name="Claims3Yrs" id="CL3Years" placeholder="# of Claims in Past 3 Years">
+        <input type="text" name="EmplyStatus" id="EmplyStatus" placeholder="Employment Status(E,R,S)">
+        <input type="text" name="YrBuilt" id="YrBuilt" placeholder="Year Built">
+        <input type="text" name="NumBedrooms" id="NumBedrooms" placeholder="# of Bedrooms">
+        <input type="text" name="BizUse" id="BizUse" placeholder="Business Use 'Y'or'N'">
+        <input type="text" name="PropUsage" id="PropUsage" placeholder="Property Usage - PH or I">
+        <input type="text" name="PolStatus" id="PolStatus" list="psValues" placeholder="Policy Status">
+        <datalist id="psValues">
+            <option value="Live">
+            <option value="Lapsed">
+            <option value="Cancelled">
+        </datalist>
+        <input type="text" name="MaxUnocc" id="MaxUnocc" placeholder="Max Days Unoccupied">
+        <input type="text" name="Alarm" id="Alarm" placeholder="Alarm Installed? 'Y'or'N'">
+        <input type="text" name="Deadbolts" id="Deadbolts" placeholder="Deadbolts Installed?-'Y'or'N'">
+        <input type="text" name="PropAddress" id="PropAddress" placeholder="Property Street Address">
+        <input type="text" name="City" id="City" placeholder="City">
+        <input type="text" name="State" id="State" placeholder="State">
+        <input type="text" name="HoodWatch" id="HoodWatch" placeholder="Neighborhood Watch? 'Y'or'N'">
+        <input type="text" name="OnMarket" id="OnMarket" placeholder="On Market? 'Y'or'N'">
+        <input type="text" name="PurchPrice" id="PurchPrice" placeholder="Purchase Price (digits only)">
+        <input type="text" name="ListPrice" id="ListPrice" placeholder="List Price (0 if unknown)">
+        <input type="text" name="SalePrice" id="SalePrice" placeholder="Sale Price ('0 if unknown'')">
+        <input type="text" name="DaysOnMarket" id="DaysOnMarket" placeholder="# of Days on Market">
+        <input type="text" name="SaleDate" id="SaleDate" placeholder="Sale Date or 'None'">
+        <input type="text" name="SaleStatus" id="SaleStatus" placeholder="Pending,Sold,or Off">
+
+        <input type="submit" placeholder="Add Record">
+
+    </form>
+</div>
+{% endblock %}

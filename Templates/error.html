@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>ERROR</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">ERROR - WRONG FORMAT FOR THIS INPUT:</h1>
+    <h3 style="text-align: center">{{ eVar }} </h3>
+    <form>
+         <input type="button" value="Go back!" onclick="history.back()">
+    </form>
+</div>
+{% endblock %}

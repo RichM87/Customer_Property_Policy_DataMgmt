@@ -1,0 +1,7 @@
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\bin\Debug\2ndCSharpSQLProject.exe.config
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\bin\Debug\2ndCSharpSQLProject.exe
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\bin\Debug\2ndCSharpSQLProject.pdb
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\obj\Debug\DBCSharpSQLProject.csproj.AssemblyReference.cache
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\obj\Debug\DBCSharpSQLProject.csproj.CoreCompileInputs.cache
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\obj\Debug\2ndCSharpSQLProject.exe
+C:\Users\richm\source\repos\HomeInsCSharpCodeFiles\obj\Debug\2ndCSharpSQLProject.pdb

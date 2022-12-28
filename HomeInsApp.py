@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, request, redirect
-import csv, pdb
+from flask import Flask, render_template, url_for, request, redirect, flash
+import csv, pdb, sqlite3#,cgi
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
 
@@ -48,30 +48,30 @@ class Policy(myDB.Model):
 
 def write_to_csv(custData):
     with open('./propPolicy_database.csv', mode='a', newline='') as prop_db_csv:  #needed to add /WServer to file address when working with pythonanywhere
-        fName = custData['FirstName']
-        lName = custData['LastName']
+        fName = custData['FirstName'].capitalize()
+        lName = custData['LastName'].capitalize()
         quoteDate = custData['QuoteDate']
         dob = custData['DateofBirth']
-        phSex = custData['PhSex']
-        marStatus = custData['Married?']
+        phSex = custData['PhSex'].upper()
+        marStatus = custData['Married?'].upper()
         yrsOwned = custData['YearsOwned']
         claims3yrs = int(custData['Claims3Yrs'])
-        emplyStatus = custData['EmplyStatus']
+        emplyStatus = custData['EmplyStatus'].upper()
         yrBuilt = int(custData['YrBuilt'])
         numBedrooms = int(custData['NumBedrooms'])
-        bizUse = custData['BizUse']
-        propUsage = custData['PropUsage']
-        polStatus = custData['PolStatus']
+        bizUse = custData['BizUse'].upper()
+        propUsage = custData['PropUsage'].upper()
+        polStatus = custData['PolStatus'].capitalize()
         maxUnocc = int(custData['MaxUnocc'])
-        alarm = custData['Alarm']
-        deadbolts = custData['Deadbolts']
-        propAddress = custData['PropAddress']
-        city = custData['City']
-        state = custData['State']
-        hoodWatch = custData['HoodWatch']
+        alarm = custData['Alarm'].upper()
+        deadbolts = custData['Deadbolts'].upper()
+        propAddress = custData['PropAddress'].upper()
+        city = custData['City'].upper()
+        state = custData['State'].upper()
+        hoodWatch = custData['HoodWatch'].upper()
         daysOnMarket = int(custData['DaysOnMarket'])
-        onMarket = custData['OnMarket']
-        saleStatus = custData['SaleStatus']
+        onMarket = custData['OnMarket'].upper()
+        saleStatus = custData['SaleStatus'].upper()
         purchPrice = int(custData['PurchPrice'])
         listPrice = int(custData['ListPrice'])
         saleDate = custData['SaleDate']
@@ -96,32 +96,69 @@ def write_to_csv(custData):
             # pdb.set_trace()
             csv_writer3.writerow([propAddress,city,state,listPrice,salePrice,onMarket,daysOnMarket,saleStatus])
 
+@app.route('/updateSearch', methods=['GET'])
+def search():
+    print('HELLO')
+    # pdb.set_trace()
+    srch = request.args.get('lnSearch')
+    srch2 = request.args.get('propAddress')
+    print(srch)
+    print(srch2)
+    # box = cgi.FieldStorage()
+    # searchTerm = box.getvalue('testBox')
+    # print(searchTerm)
+    sqliteConnection = sqlite3.connect('propPolicy.db')
+    cursor = sqliteConnection.cursor()
+    sql_command = f"SELECT id FROM Policy WHERE lName LIKE '%{srch.capitalize()}%' AND propAddress LIKE '%{srch2.capitalize()}%'"
+    try:
+        records = []
+        cursor.execute(sql_command)
+        result = cursor.fetchall()
+        if result:
+            print(result)
+            for item in result:
+                x = ''.join(str(item)[1:-2])
+                print(x)
+                id = int(x)
+                record = Policy.query.get_or_404(id)
+                records.append(record)
+        else:
+            return "There are no records with this criteria. Go back and try again."
+    except:
+        return "The SQL command was not executed for some reason."
+
+    return render_template('updateSearch.html', records=records)
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
         custData = request.form.to_dict()
-        fName = custData['FirstName']
-        lName = custData['LastName']
+        fName = custData['FirstName'].capitalize()
+        lName = custData['LastName'].capitalize()
         quoteDate = custData['QuoteDate']
         dob = custData['DateofBirth']
-        phSex = custData['PhSex']
-        marStatus = custData['Married?']
+        phSex = custData['PhSex'].upper()
+        marStatus = custData['Married?'].upper()
         yrsOwned = int(custData['YearsOwned'])
         claims3yrs = int(custData['Claims3Yrs'])
-        emplyStatus = custData['EmplyStatus']
+        emplyStatus = custData['EmplyStatus'].upper()
         yrBuilt = int(custData['YrBuilt'])
         numBedrooms = int(custData['NumBedrooms'])
-        bizUse = custData['BizUse']
-        propUsage = custData['PropUsage']
-        polStatus = custData['PolStatus']
+        bizUse = custData['BizUse'].upper()
+        propUsage = custData['PropUsage'].upper()
+        polStatus = custData['PolStatus'].upper()
         maxUnocc = int(custData['MaxUnocc'])
-        alarm = custData['Alarm']
-        deadbolts = custData['Deadbolts']
-        propAddress = custData['PropAddress']
-        city = custData['City']
+        alarm = custData['Alarm'].upper()
+        deadbolts = custData['Deadbolts'].upper()
+        propAddress = custData['PropAddress'].upper()
+        city = custData['City'].upper()
         state = (custData['State']).upper()
-        hoodWatch = custData['HoodWatch']
+        hoodWatch = custData['HoodWatch'].upper()
+        saleDate = custData['SaleDate']
+        onMarket = custData['OnMarket'].upper()
+        saleStatus = custData['SaleStatus'].upper()
+        salePrice = (custData['SalePrice'])
         if len(fName) < 1:
             return render_template('error.html', eVar=fName)
         if len(lName) < 1:
@@ -138,10 +175,7 @@ def index():
             return render_template('error.html', eVar=custData['DaysOnMarket'])
         else:
             daysOnMarket = int(custData['DaysOnMarket'])
-        saleDate = custData['SaleDate']
-        onMarket = custData['OnMarket']
-        saleStatus = custData['SaleStatus']
-        salePrice = custData['SalePrice']
+
         if len(custData['SalePrice']) < 1:
             return render_template('error.html', eVar=custData['SalePrice'])
         else:
@@ -304,14 +338,17 @@ def update(id):
         record.saleDate = request.form['SaleDate']
         record.onMarket = request.form['OnMarket']
         record.saleStatus = request.form['SaleStatus']
-        record.salePrice = request.form['SalePrice']
+        record.salePrice = int(request.form['SalePrice'])
 
         if record.quoteDate:
             # print(type(record.quoteDate))
             if "/" in record.quoteDate:
                 record.quoteDate=record.quoteDate.replace("/","-")
             try:
-                c_rqDate = datetime.strptime(record.quoteDate,'%m-%d-%Y')
+                qDate = record.quoteDate
+                qDatex = qDate[5:10]+'-'+qDate[0:4]
+                print(qDatex)
+                c_rqDate = datetime.strptime(qDatex,'%m-%d-%Y')
                 record.quoteDate = c_rqDate
             except:
                 return render_template('error.html', eVar =record.quoteDate)
@@ -320,7 +357,10 @@ def update(id):
             if "/" in record.dob:
                 record.dob = record.dob.replace("/", "-")
             try:
-                c_rdob = datetime.strptime(record.dob, '%m-%d-%Y')
+                rDOB = record.dob
+                rDOBx = rDOB[5:10] + '-' + rDOB[0:4]
+                print(rDOBx)
+                c_rdob = datetime.strptime(rDOBx, '%m-%d-%Y')
                 record.dob = c_rdob
             except:
                 return render_template('error.html', eVar=record.dob)
@@ -330,7 +370,10 @@ def update(id):
             if "/" in record.saleDate:
                 record.saleDate=record.saleDate.replace("/","-")
             try:
-                c_sDate = datetime.strptime(record.saleDate,'%m-%d-%Y')
+                sDate = record.saleDate
+                sDatex = sDate[5:10] + '-' + sDate[0:4]
+                print(sDatex)
+                c_sDate = datetime.strptime(sDatex,'%m-%d-%Y')
                 record.saleDate = c_sDate
             except:
                 return render_template('error.html', eVar =record.saleDate)
@@ -348,9 +391,9 @@ def update(id):
     else:
         return render_template('update.html', record=record)
 
-@app.route('/error/<string:eVar>', methods=['GET'])
-def format_error(eVar):
-    return render_template('error.html')
+# @app.route('/error/<string:eVar>', methods=['GET'])
+# def format_error(eVar):
+#     return render_template('error.html')
 
 
 @app.route('/delete/<int:id>')
